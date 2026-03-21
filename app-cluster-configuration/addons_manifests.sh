@@ -6,14 +6,14 @@
 #     --policy-name AWSLoadBalancerControllerIAMPolicy \
 #     --policy-document file://iam_policy.json
 
-eksctl create iamserviceaccount \
-    --cluster=app-cluster-01 \
-    --namespace=kube-system \
-    --name=aws-load-balancer-controller \
-    --attach-policy-arn=arn:aws:iam::829007908826:policy/AWSLoadBalancerControllerIAMPolicy \
-    --override-existing-serviceaccounts \
-    --region ap-south-1 \
-    --approve
+# eksctl create iamserviceaccount \
+#     --cluster=app-cluster-01 \
+#     --namespace=kube-system \
+#     --name=aws-load-balancer-controller \
+#     --attach-policy-arn=arn:aws:iam::829007908826:policy/AWSLoadBalancerControllerIAMPolicy \
+#     --override-existing-serviceaccounts \
+#     --region ap-south-1 \
+#     --approve
 
 helm repo add eks https://aws.github.io/eks-charts
 
@@ -25,7 +25,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=ap-south-1 \
-  --set vpcId=vpc-077116fa56d8feb2a \
+  --set vpcId=vpc-06e10a78c7b7ace81 \
   --set image.repository=public.ecr.aws/eks/aws-load-balancer-controller
 
 # VPA
@@ -42,5 +42,5 @@ kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autos
 istioctl install --set profile=demo # Create Istio Control PLane Directly in the Cluster
 
 # Create manifests for Istio Control Plane and save it to a file
-istioctl manifest generate --set profile=demo >> ../app-service-mesh-config/istio-installation-manifests.yaml
-kubectl apply -f ../app-service-mesh-config/istio-installation-manifests.yaml
+istioctl manifest generate --set profile=demo >> app-service-mesh-config/istio-installation-manifests.yaml
+kubectl apply -f app-service-mesh-config/istio-installation-manifests.yaml
