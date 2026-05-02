@@ -72,12 +72,29 @@ resource "aws_security_group" "app_vpc_private_sg" {
         security_groups  = [aws_security_group.app_vpc_public_sg.id]
     }
 
+    ingress {
+        description      = "Cluster API - Istio Webhook namespace.sidecar-injector.istio.io"
+        from_port        = 15017
+        to_port          = 15017
+        protocol         = "tcp"
+        security_groups  = [aws_eks_cluster.app_cluster_01.vpc_config[0].cluster_security_group_id]
+    }
+
+    ingress {
+        description      = "Cluster API to nodes ports/protocols"
+        from_port        = 15012
+        to_port          = 15012
+        protocol         = "tcp"
+        security_groups  = [aws_eks_cluster.app_cluster_01.vpc_config[0].cluster_security_group_id]
+    }
+
     egress {
         from_port        = 0
         to_port          = 0
         protocol         = "-1"
         cidr_blocks      = ["0.0.0.0/0"]
     }
+
 }
 
 resource "aws_security_group" "eks_rds_db_sg" {

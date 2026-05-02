@@ -21,6 +21,19 @@ resource "kubernetes_namespace_v1" "app2_fargate_ns" {
   ]
 }
 
+resource "kubernetes_namespace_v1" "default_ns" {
+  metadata {
+    name = "default"
+    labels = {
+      istio-injection = "enabled"
+    }
+  }
+
+  depends_on = [
+    aws_eks_cluster.app_cluster_01
+  ]
+}
+
 resource "kubernetes_service_account_v1" "ums_pod_identity_deployment_sa" {
     metadata {
         name      = "ums-pod-identity-deployment-sa"
