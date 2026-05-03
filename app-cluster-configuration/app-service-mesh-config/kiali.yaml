@@ -463,7 +463,7 @@ spec:
         secret:
           secretName: "kiali-multi-cluster-secret"
           optional: true
-...
+
 ---
 
 apiVersion: networking.k8s.io/v1
@@ -491,8 +491,20 @@ metadata:
     # alb.ingress.kubernetes.io/group.order: '30'
 spec:
   ingressClassName: app-default-alb-ingress-class
-  defaultBackend:
-    service:
-      name: kiali
-      port:
-        number: 20001
+  rules:
+  - http:
+      paths:
+      - path: /kiali
+        pathType: Prefix
+        backend:
+          service:
+            name: kiali
+            port:
+              number: 20001
+      - path: /jaeger
+        pathType: Prefix
+        backend:
+          service:
+            name: tracing
+            port:
+              number: 80
