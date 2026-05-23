@@ -491,6 +491,11 @@ metadata:
     # alb.ingress.kubernetes.io/group.order: '30'
 spec:
   ingressClassName: app-default-alb-ingress-class
+  # defaultBackend:
+  #   service:
+  #     name: tracing
+  #     port:
+  #       number: 80
   rules:
   - http:
       paths:
@@ -501,10 +506,3 @@ spec:
             name: kiali
             port:
               number: 20001
-      - path: /jaeger
-        pathType: Prefix
-        backend:
-          service:
-            name: tracing
-            port:
-              number: 80
