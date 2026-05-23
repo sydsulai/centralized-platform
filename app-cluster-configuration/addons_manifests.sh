@@ -25,7 +25,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=ap-south-1 \
-  --set vpcId=vpc-06e10a78c7b7ace81 \
+  --set vpcId=vpc-07e2bb8fb16b601f5 \
   --set image.repository=public.ecr.aws/eks/aws-load-balancer-controller
 
 # VPA
@@ -44,3 +44,4 @@ istioctl install --set profile=demo # Create Istio Control PLane Directly in the
 # Create manifests for Istio Control Plane and save it to a file
 istioctl manifest generate --set profile=demo >> app-service-mesh-config/istio-installation-manifests.yaml
 kubectl apply -f app-service-mesh-config/istio-installation-manifests.yaml
+kubectl label namespace default istio-injection=enabled --overwrite
