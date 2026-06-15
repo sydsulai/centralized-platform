@@ -1,147 +1,162 @@
-
-resource "aws_vpc" "app_vpc" {
-    cidr_block           = var.vpc_cidr_block
-    enable_dns_hostnames = true
-    enable_dns_support   = true
-    tags = {
-        Name = var.vpc_name,
-        Environment = var.environment
-    }
+data "aws_availability_zones" "available" {
+  state = "available"
 }
 
-resource "aws_subnet" "app_vpc_public_subnets" {
-    vpc_id            = aws_vpc.app_vpc.id
-    cidr_block        = var.public_subnet_cidrs
-    map_public_ip_on_launch = true
-    availability_zone = "${var.aws_region}a"
-    tags = {
-        Name = var.public_subnet_name,
-        Environment = var.environment
-    }
+resource "aws_vpc" "platform_vpc" {
+  cidr_block           = var.vpc_cidr_block
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = merge(var.tags, {
+    Name = var.vpc_name
+  })
 }
 
-resource "aws_subnet" "app_vpc_private_subnets" {
-    vpc_id            = aws_vpc.app_vpc.id
-    cidr_block        = var.private_subnet_cidrs
-    availability_zone = "${var.aws_region}a"
-    tags = {
-        Name = var.private_subnet_name,
-        Environment = var.environment
-    }
+resource "aws_subnet" "platform_vpc_public_subnets" {
+  vpc_id                  = aws_vpc.platform_vpc.id
+  cidr_block              = var.public_subnet_cidrs[0]
+  availability_zone       = data.aws_availability_zones.available.names[0]
+  map_public_ip_on_launch = true
+
+  tags = merge(var.tags, {
+    Name                                     = "${var.public_subnet_name}-az1"
+    "kubernetes.io/role/elb"                 = "1"
+    "kubernetes.io/cluster/platform-cluster" = "shared"
+  })
 }
 
-resource "aws_internet_gateway" "app_vpc_igw" {
-    vpc_id = aws_vpc.app_vpc.id
-    tags = {
-        Name = var.igw_name
-        Environment = var.environment
-    }
+resource "aws_subnet" "platform_vpc_public_subnets_2" {
+  vpc_id                  = aws_vpc.platform_vpc.id
+  cidr_block              = var.public_subnet_cidrs[1]
+  availability_zone       = data.aws_availability_zones.available.names[1]
+  map_public_ip_on_launch = true
+
+  tags = merge(var.tags, {
+    Name                                     = "${var.public_subnet_name}-az2"
+    "kubernetes.io/role/elb"                 = "1"
+    "kubernetes.io/cluster/platform-cluster" = "shared"
+  })
 }
 
-resource "aws_route_table" "app_vpc_public_rt" {
-    vpc_id = aws_vpc.app_vpc.id
-    tags = {
-        Name = var.public_subnet_route_table_name,
-        Environment = var.environment
-    }
+resource "aws_subnet" "platform_vpc_private_subnets" {
+  vpc_id            = aws_vpc.platform_vpc.id
+  cidr_block        = var.private_subnet_cidrs[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
+
+  tags = merge(var.tags, {
+    Name                                     = "${var.private_subnet_name}-az1"
+    "kubernetes.io/role/internal-elb"        = "1"
+    "kubernetes.io/cluster/platform-cluster" = "shared"
+  })
 }
 
-resource "aws_route" "aws_vpc_public_subnet_internet_access" {
-    route_table_id         = aws_route_table.app_vpc_public_rt.id
-    destination_cidr_block = "0.0.0.0/0"
-    gateway_id             = aws_internet_gateway.app_vpc_igw.id
+resource "aws_subnet" "platform_vpc_private_subnets_2" {
+  vpc_id            = aws_vpc.platform_vpc.id
+  cidr_block        = var.private_subnet_cidrs[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
+
+  tags = merge(var.tags, {
+    Name                                     = "${var.private_subnet_name}-az2"
+    "kubernetes.io/role/internal-elb"        = "1"
+    "kubernetes.io/cluster/platform-cluster" = "shared"
+  })
 }
 
-resource "aws_route_table_association" "aws_vpc_public_subnet_rt_assoc" {
-    subnet_id      = aws_subnet.app_vpc_public_subnets.id
-    route_table_id = aws_route_table.app_vpc_public_rt.id
+resource "aws_internet_gateway" "platform_vpc_igw" {
+  vpc_id = aws_vpc.platform_vpc.id
+
+  tags = merge(var.tags, {
+    Name = var.igw_name
+  })
 }
 
-resource "aws_route_table" "app_vpc_private_rt" {
-    vpc_id = aws_vpc.app_vpc.id
-    tags = {
-        Name = var.private_subnet_route_table_name
-    }
+resource "aws_eip" "platform_vpc_nat_eip" {
+  domain = "vpc"
+
+  tags = merge(var.tags, {
+    Name = "${var.natgw_name}-eip"
+  })
 }
 
-resource "aws_route_table_association" "aws_vpc_private_subnet_rt_assoc" {
-    subnet_id      = aws_subnet.app_vpc_private_subnets.id
-    route_table_id = aws_route_table.app_vpc_private_rt.id
+resource "aws_nat_gateway" "platform_vpc_natgw" {
+  allocation_id = aws_eip.platform_vpc_nat_eip.id
+  subnet_id     = aws_subnet.platform_vpc_public_subnets.id
+
+  tags = merge(var.tags, {
+    Name = var.natgw_name
+  })
+
+  depends_on = [aws_internet_gateway.platform_vpc_igw]
 }
 
-# DHCP option set for VPC
-# resource "aws_vpc_dhcp_options" "app_vpc_dhcp_options" {
-#     domain_name         = var.domain_name
-#     domain_name_servers = var.domain_name_servers
-#     tags = {
-#         Name        = var.dhcp_option_set_name
-#         Environment = var.environment
-#     }
-# }
+resource "aws_route_table" "platform_public_rt_az1" {
+  vpc_id = aws_vpc.platform_vpc.id
 
-# resource "aws_vpc_dhcp_options_association" "app_vpc_dhcp_options_assoc" {
-#     vpc_id          = aws_vpc.app_vpc.id
-#     dhcp_options_id = aws_vpc_dhcp_options.app_vpc_dhcp_options.id
-# }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.platform_vpc_igw.id
+  }
 
-# resource "aws_vpc_endpoint" "app_vpc_s3_endpoint" {
-#     vpc_id            = aws_vpc.app_vpc.id
-#     service_name      = "com.amazonaws.${var.aws_region}.s3"
-#     vpc_endpoint_type = "Gateway"
-#     route_table_ids   = [aws_route_table.app_vpc_private_rt.id]
-#     tags = {
-#         Name        = "${var.vpc_name}-s3-endpoint"
-#         Environment = var.environment
-#     }
-# }
-
-# EKS Restriction, Two Private Subnets required
-resource "aws_subnet" "app_vpc_private_subnets_2" {
-    vpc_id            = aws_vpc.app_vpc.id
-    cidr_block        = "10.0.4.0/24"
-    availability_zone = "${var.aws_region}b"
-    tags = {
-        Name = var.private_subnet_name,
-        Environment = var.environment
-    }
+  tags = merge(var.tags, {
+    Name = "${var.public_subnet_route_table_name}-az1"
+  })
 }
 
-resource "aws_route_table_association" "aws_vpc_private_subnet_rt_assoc_2" {
-    subnet_id      = aws_subnet.app_vpc_private_subnets_2.id
-    route_table_id = aws_route_table.app_vpc_private_rt.id
+resource "aws_route_table" "platform_public_rt_az2" {
+  vpc_id = aws_vpc.platform_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.platform_vpc_igw.id
+  }
+
+  tags = merge(var.tags, {
+    Name = "${var.public_subnet_route_table_name}-az2"
+  })
 }
 
-resource "aws_subnet" "app_vpc_public_subnets_2" {
-    vpc_id            = aws_vpc.app_vpc.id
-    cidr_block        = "10.0.5.0/24"
-    map_public_ip_on_launch = true
-    availability_zone = "${var.aws_region}b"
-    tags = {
-        Name = var.public_subnet_name,
-        Environment = var.environment
-    }
+resource "aws_route_table" "platform_private_rt_az1" {
+  vpc_id = aws_vpc.platform_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.platform_vpc_natgw.id
+  }
+
+  tags = merge(var.tags, {
+    Name = "${var.private_subnet_route_table_name}-az1"
+  })
 }
 
-resource "aws_route_table_association" "aws_vpc_public_subnet_rt_assoc_2" {
-    subnet_id      = aws_subnet.app_vpc_public_subnets_2.id
-    route_table_id = aws_route_table.app_vpc_public_rt.id
+resource "aws_route_table" "platform_private_rt_az2" {
+  vpc_id = aws_vpc.platform_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.platform_vpc_natgw.id
+  }
+
+  tags = merge(var.tags, {
+    Name = "${var.private_subnet_route_table_name}-az2"
+  })
 }
 
-# Required NAT Gateway to allow EKS --node-private-networking
-resource "aws_eip" "app_vpc_eip" {
-    domain     = "vpc"
+resource "aws_route_table_association" "platform_public_subnet_az1_association" {
+  subnet_id      = aws_subnet.platform_vpc_public_subnets.id
+  route_table_id = aws_route_table.platform_public_rt_az1.id
 }
 
-resource "aws_nat_gateway" "app_vpc_nat" {
-    allocation_id = aws_eip.app_vpc_eip.id
-    subnet_id     = aws_subnet.app_vpc_public_subnets.id
-    tags = {
-        Name = var.natgw_name
-    }
+resource "aws_route_table_association" "platform_public_subnet_az2_association" {
+  subnet_id      = aws_subnet.platform_vpc_public_subnets_2.id
+  route_table_id = aws_route_table.platform_public_rt_az2.id
 }
 
-resource "aws_route" "app_vpc_private_subnet_nat_access" {
-    route_table_id         = aws_route_table.app_vpc_private_rt.id
-    destination_cidr_block = "0.0.0.0/0"
-    nat_gateway_id         = aws_nat_gateway.app_vpc_nat.id
+resource "aws_route_table_association" "platform_private_subnet_az1_association" {
+  subnet_id      = aws_subnet.platform_vpc_private_subnets.id
+  route_table_id = aws_route_table.platform_private_rt_az1.id
+}
+
+resource "aws_route_table_association" "platform_private_subnet_az2_association" {
+  subnet_id      = aws_subnet.platform_vpc_private_subnets_2.id
+  route_table_id = aws_route_table.platform_private_rt_az2.id
 }
