@@ -51,13 +51,13 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
         name      = "aws-load-balancer-controller"
         namespace = "kube-system"
         annotations = {
-            "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller_irsa.arn
+            "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller_app_irsa.arn
         }
     }
 
     depends_on = [
         aws_eks_cluster.app_cluster_01,
-        aws_iam_role_policy_attachment.aws_load_balancer_controller_irsa_policy_attachment
+        aws_iam_role_policy_attachment.aws_load_balancer_controller_app_irsa_policy_attachment
     ]
 }
 
@@ -66,12 +66,12 @@ resource "kubernetes_service_account_v1" "xray_daemon" {
         name      = "xray-daemon"
         namespace = "default"
         annotations = {
-            "eks.amazonaws.com/role-arn" = aws_iam_role.xray_daemon_irsa.arn
+            "eks.amazonaws.com/role-arn" = aws_iam_role.xray_daemon_app_irsa.arn
         }
     }
 
     depends_on = [
         aws_eks_cluster.app_cluster_01,
-        aws_iam_role_policy_attachment.xray_daemon_irsa_policy_attachment
+        aws_iam_role_policy_attachment.xray_daemon_app_irsa_policy_attachment
     ]
 }

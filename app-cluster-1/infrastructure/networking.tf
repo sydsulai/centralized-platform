@@ -145,3 +145,28 @@ resource "aws_route" "app_vpc_private_subnet_nat_access" {
     destination_cidr_block = "0.0.0.0/0"
     nat_gateway_id         = aws_nat_gateway.app_vpc_nat.id
 }
+
+# # VPC Peering routes: app_vpc -> platform_vpc
+# data "aws_vpc" "platform_vpc" {
+#   tags = {
+#     Name = "platform-vpc"
+#   }
+# }
+
+# data "aws_vpc_peering_connection" "platform_to_app" {
+#   vpc_id      = data.aws_vpc.platform_vpc.id
+#   peer_vpc_id = aws_vpc.app_vpc.id
+#   status      = "active"
+# }
+
+# resource "aws_route" "app_public_to_platform" {
+#     route_table_id            = aws_route_table.app_vpc_public_rt.id
+#     destination_cidr_block    = data.aws_vpc.platform_vpc.cidr_block
+#     vpc_peering_connection_id = data.aws_vpc_peering_connection.platform_to_app.id
+# }
+
+# resource "aws_route" "app_private_to_platform" {
+#     route_table_id            = aws_route_table.app_vpc_private_rt.id
+#     destination_cidr_block    = data.aws_vpc.platform_vpc.cidr_block
+#     vpc_peering_connection_id = data.aws_vpc_peering_connection.platform_to_app.id
+# }
