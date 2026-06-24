@@ -162,42 +162,42 @@ resource "aws_route_table_association" "platform_private_subnet_az2_association"
 }
 
 # VPC Peering Connection: platform_vpc (requester) -> app_vpc (accepter)
-data "aws_vpc" "app_vpc" {
-  tags = {
-    Name = "app-vpc"
-  }
-}
+# data "aws_vpc" "app_vpc" {
+#   tags = {
+#     Name = "app-vpc"
+#   }
+# }
 
-resource "aws_vpc_peering_connection" "platform_to_app" {
-  vpc_id      = aws_vpc.platform_vpc.id
-  peer_vpc_id = data.aws_vpc.app_vpc.id
-  auto_accept = true
+# resource "aws_vpc_peering_connection" "platform_to_app" {
+#   vpc_id      = aws_vpc.platform_vpc.id
+#   peer_vpc_id = data.aws_vpc.app_vpc.id
+#   auto_accept = true
 
-  tags = merge(var.tags, {
-    Name = "platform-vpc-to-app-vpc-peering"
-  })
-}
+#   tags = merge(var.tags, {
+#     Name = "platform-vpc-to-app-vpc-peering"
+#   })
+# }
 
-resource "aws_route" "platform_public_to_app_az1" {
-  route_table_id            = aws_route_table.platform_public_rt_az1.id
-  destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
-  vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
-}
+# resource "aws_route" "platform_public_to_app_az1" {
+#   route_table_id            = aws_route_table.platform_public_rt_az1.id
+#   destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
+#   vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
+# }
 
-resource "aws_route" "platform_public_to_app_az2" {
-  route_table_id            = aws_route_table.platform_public_rt_az2.id
-  destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
-  vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
-}
+# resource "aws_route" "platform_public_to_app_az2" {
+#   route_table_id            = aws_route_table.platform_public_rt_az2.id
+#   destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
+#   vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
+# }
 
-resource "aws_route" "platform_private_to_app_az1" {
-  route_table_id            = aws_route_table.platform_private_rt_az1.id
-  destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
-  vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
-}
+# resource "aws_route" "platform_private_to_app_az1" {
+#   route_table_id            = aws_route_table.platform_private_rt_az1.id
+#   destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
+#   vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
+# }
 
-resource "aws_route" "platform_private_to_app_az2" {
-  route_table_id            = aws_route_table.platform_private_rt_az2.id
-  destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
-  vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
-}
+# resource "aws_route" "platform_private_to_app_az2" {
+#   route_table_id            = aws_route_table.platform_private_rt_az2.id
+#   destination_cidr_block    = data.aws_vpc.app_vpc.cidr_block
+#   vpc_peering_connection_id = aws_vpc_peering_connection.platform_to_app.id
+# }

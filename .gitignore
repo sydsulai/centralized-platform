@@ -36,3 +36,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Ignore certs directory and yaml files which may contain sensitive data
+certs/
+*cert*

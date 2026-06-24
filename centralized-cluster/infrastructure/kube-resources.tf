@@ -25,3 +25,17 @@ resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
     aws_iam_role_policy_attachment.aws_load_balancer_controller_platform_irsa_policy_attachment
   ]
 }
+
+resource "kubernetes_namespace_v1" "istio_system_ns" {
+  metadata {
+    name = "istio-system"
+    labels = {
+      "topology.istio.io/network" = "platform-vpc"
+      "topology.istio.io/cluster" = "platform-cluster"
+    }
+  }
+
+  depends_on = [
+    aws_eks_cluster.platform_cluster
+  ]
+}
