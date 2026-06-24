@@ -14,9 +14,9 @@ output "private_subnet_id_2" {
   value = aws_subnet.app_vpc_private_subnets_2.id
 }
 
-output "rds_db_endpoint" {
-  value = aws_db_instance.usermgmtdb.endpoint
-}
+# output "rds_db_endpoint" {
+#   value = aws_db_instance.usermgmtdb.endpoint
+# }
 
 output "vpc_id" {
   value = aws_vpc.app_vpc.id
