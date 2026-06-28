@@ -18483,8 +18483,9 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
-      name: istiod-default
+      name: istiod
       namespace: istio-system
       path: /validate
   failurePolicy: Ignore
@@ -18516,7 +18517,7 @@ data:
   mesh: |-
     accessLogFile: /dev/stdout
     defaultConfig:
-      discoveryAddress: istiod-default.istio-system.svc:15012
+      discoveryAddress: istiod.istio-system.svc:15012
       meshId: mesh1
     defaultProviders:
       metrics:
@@ -20919,7 +20920,7 @@ data:
         "securityContext": {}
       },
       "global": {
-        "caAddress": "",
+        "caAddress": "istiod.istio-system.svc:15012",
         "caName": "",
         "certSigners": [],
         "configCluster": false,
@@ -21157,7 +21158,7 @@ data:
         "securityContext": {}
       },
       "global": {
-        "caAddress": "",
+        "caAddress": "istiod.istio-system.svc:15012",
         "caName": "",
         "certSigners": [],
         "configCluster": false,
@@ -21470,8 +21471,9 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
-      name: istiod-default
+      name: istiod
       namespace: istio-system
       path: /inject
       port: 443
@@ -21505,8 +21507,9 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
-      name: istiod-default
+      name: istiod
       namespace: istio-system
       path: /inject
       port: 443
@@ -21732,7 +21735,7 @@ spec:
         - name: PILOT_CERT_PROVIDER
           value: istiod
         - name: CA_ADDR
-          value: istiod-default.istio-system.svc:15012
+          value: istiod.istio-system.svc:15012
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -22158,6 +22161,9 @@ spec:
         - mountPath: /var/run/secrets/istiod/ca
           name: istio-csr-ca-configmap
           readOnly: true
+        - mountPath: /var/lib/istio/inject
+          name: inject-volume
+          readOnly: true
       serviceAccountName: istiod-default
       tolerations:
       - key: cni.istio.io/not-ready
@@ -22190,6 +22196,10 @@ spec:
           name: istio-ca-root-cert
           optional: true
         name: istio-csr-ca-configmap
+      - configMap:
+          defaultMode: 420
+          name: istio-sidecar-injector-default
+        name: inject-volume
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22556,6 +22566,44 @@ metadata:
     operator.istio.io/component: Pilot
     release: istio
   name: istiod-default
+  namespace: istio-system
+spec:
+  ports:
+  - name: grpc-xds
+    port: 15010
+    protocol: TCP
+  - name: https-dns
+    port: 15012
+    protocol: TCP
+  - name: https-webhook
+    port: 443
+    protocol: TCP
+    targetPort: 15017
+  - name: http-monitoring
+    port: 15014
+    protocol: TCP
+  selector:
+    app: istiod
+    istio.io/rev: default
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: istiod
+    app.kubernetes.io/instance: istio
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: istiod
+    app.kubernetes.io/part-of: istio
+    app.kubernetes.io/version: 1.29.1
+    helm.sh/chart: istiod-1.29.1
+    install.operator.istio.io/owning-resource: unknown
+    istio: pilot
+    istio.io/rev: default
+    operator.istio.io/component: Pilot
+    release: istio
+  name: istiod
   namespace: istio-system
 spec:
   ports:

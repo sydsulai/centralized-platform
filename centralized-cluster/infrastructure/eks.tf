@@ -48,23 +48,23 @@ resource "aws_eks_pod_identity_association" "eks_pod_identity_agent_association"
   ]
 }
 
-resource "aws_eks_fargate_profile" "platform_cluster_fargate_profile" {
-  cluster_name           = aws_eks_cluster.platform_cluster.name
-  fargate_profile_name   = "platform-cluster-fargate-profile"
-  pod_execution_role_arn = "arn:aws:iam::829007908826:role/cluster-fargate-pod-execution-role"
-  subnet_ids = [
-    aws_subnet.platform_vpc_private_subnets.id,
-    aws_subnet.platform_vpc_private_subnets_2.id,
-  ]
+# resource "aws_eks_fargate_profile" "platform_cluster_fargate_profile" {
+#   cluster_name           = aws_eks_cluster.platform_cluster.name
+#   fargate_profile_name   = "platform-cluster-fargate-profile"
+#   pod_execution_role_arn = "arn:aws:iam::829007908826:role/cluster-fargate-pod-execution-role"
+#   subnet_ids = [
+#     aws_subnet.platform_vpc_private_subnets.id,
+#     aws_subnet.platform_vpc_private_subnets_2.id,
+#   ]
 
-  selector {
-    namespace = "default"
-  }
+#   selector {
+#     namespace = "default"
+#   }
 
-  depends_on = [
-    aws_eks_cluster.platform_cluster,
-  ]
-}
+#   depends_on = [
+#     aws_eks_cluster.platform_cluster,
+#   ]
+# }
 
 resource "aws_eks_node_group" "platform_cluster_ng_private1" {
   cluster_name    = aws_eks_cluster.platform_cluster.name

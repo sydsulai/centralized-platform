@@ -1,4 +1,3 @@
-# Source: prometheus/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -335,6 +334,33 @@ data:
         regex: pushgateway
         source_labels:
         - __meta_kubernetes_service_annotation_prometheus_io_probe
+    # - job_name: 'federate-app-cluster-01'
+    #   scrape_interval: 15s
+    #   honor_labels: true
+    #   metrics_path: '/federate'
+    #   params:
+    #     'match[]':
+    #       - '{job="kubernetes-pods"}'
+    #   static_configs:
+    #   - targets:
+    #     # NOTE: Replace with the actual ingress gateway endpoint where Prometheus is reachable.
+    #     - app-cluster-01-istio-ingressgateway.istio-system.svc
+    #     labels:
+    #       cluster: app-cluster-01
+    - job_name: 'federate-local'
+      honor_labels: true
+      metrics_path: '/federate'
+      metric_relabel_configs:
+      - replacement: 'platform-cluster'
+        target_label: cluster
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: ['istio-system']
+      params:
+        'match[]':
+        - '{__name__=~"istio_(.*)"}'
+        - '{__name__=~"pilot(.*)"}'
     rule_files:
     - /etc/config/recording_rules.yml
     - /etc/config/alerting_rules.yml
