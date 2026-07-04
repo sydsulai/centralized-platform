@@ -18519,6 +18519,9 @@ data:
     defaultConfig:
       discoveryAddress: istiod.istio-system.svc:15012
       meshId: mesh1
+      proxyStatsMatcher:
+        inclusionRegexps:
+        - .*
     defaultProviders:
       metrics:
       - prometheus
@@ -21283,6 +21286,18 @@ data:
       "memory": {},
       "meshConfig": {
         "accessLogFile": "/dev/stdout",
+        "defaultConfig": {
+          "proxyStatsMatcher": {
+            "inclusionRegexps": [
+              ".*"
+            ]
+          }
+        },
+        "defaultProviders": {
+          "metrics": [
+            "prometheus"
+          ]
+        },
         "enablePrometheusMerge": true,
         "extensionProviders": [
           {
@@ -21417,6 +21432,20 @@ data:
         },
         "network": "platform-vpc",
         "tag": "1.29.1"
+      },
+      "meshConfig": {
+        "defaultConfig": {
+          "proxyStatsMatcher": {
+            "inclusionRegexps": [
+              ".*"
+            ]
+          }
+        },
+        "defaultProviders": {
+          "metrics": [
+            "prometheus"
+          ]
+        }
       },
       "pilot": {
         "cni": {

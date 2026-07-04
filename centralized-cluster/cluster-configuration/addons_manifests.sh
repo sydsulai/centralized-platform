@@ -10,7 +10,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=ap-south-1 \
-  --set vpcId=vpc-0d452ed72bd2e668c \
+  --set vpcId=vpc-04c528469206450a8 \
   --set image.repository=public.ecr.aws/eks/aws-load-balancer-controller
 
 # Istio

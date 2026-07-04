@@ -5,6 +5,14 @@ metadata:
 spec:
   revision: "default"
   profile: demo
+  meshConfig:
+    defaultProviders:
+      metrics:
+      - prometheus
+    defaultConfig:
+      proxyStatsMatcher:
+        inclusionRegexps:
+        - .*
   components:
     ingressGateways:
       - name: istio-ingressgateway
