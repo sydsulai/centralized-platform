@@ -131,6 +131,11 @@ data:
         enabled: true
       istio:
         root_namespace: istio-system
+      prometheus:
+        url: http://prometheus.istio-system:9090
+        cache_enabled: true
+        cache_duration: 10
+        cache_expiration: 300
       tracing:
         enabled: false
     identity:

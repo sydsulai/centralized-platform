@@ -36,7 +36,38 @@ istioctl --context="${APP_CLUSTER}" uninstall -y -f service-mesh-config/eastwest
 
 # RAW manifests for Istio Control Plane and save it to a file
 istioctl manifest generate -f service-mesh-config/istio-config.yaml >> service-mesh-config/istio-installation-manifests.yaml
+istioctl create-remote-secret \
+    --context="${PLATFORM_CLUSTER}" \
+    --name=platform-cluster | \
+    kubectl apply -f - --context="${APP_CLUSTER}"
+kubectl get secrets istio-remote-secret-platform-cluster  -o yaml -n istio-system --context=${APP_CLUSTER}
+# On app-cluster-1 — create a service account for Kiali remote access
+kubectl create serviceaccount kiali-remote --context="${APP_CLUSTER}" -n istio-system
+
+# Bind the same ClusterRole that Kiali uses locally
+kubectl create clusterrolebinding kiali-remote \
+  --clusterrole=kiali \
+  --serviceaccount=istio-system:kiali-remote \
+  --context="${APP_CLUSTER}"
+
+# Create a long-lived token for the service account
+kubectl apply --context="${APP_CLUSTER}" -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kiali-remote-token
+  namespace: istio-system
+  annotations:
+    kubernetes.io/service-account.name: kiali-remote
+type: kubernetes.io/service-account-token
+EOF
 
 # Delete all resources in a namespace
 kubectl delete $(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed 's/,$//') --all -n istio-system
 helm uninstall aws-load-balancer-controller -n kube-system
+
+export APP_GATEWAY=$(kubectl get svc istio-eastwestgateway -n istio-system \
+  --context=${APP_CLUSTER} \
+  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "App Gateway: $APP_GATEWAY"
+kubectl apply -f service-mesh-config/expose-services.yaml --context="${APP_CLUSTER}"
