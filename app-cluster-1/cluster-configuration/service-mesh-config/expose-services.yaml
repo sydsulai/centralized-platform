@@ -1,7 +1,8 @@
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
-  name: cross-network-gateway
+  name: cross-cluster-network-gateway
+  namespace: istio-system
 spec:
   selector:
     istio: eastwestgateway
@@ -14,3 +15,42 @@ spec:
         mode: AUTO_PASSTHROUGH
       hosts:
         - "*.local"
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: fleetman-service-entry
+  namespace: default
+spec:
+  hosts:
+  - fleetman-position-tracker.default.svc.cluster.local
+  - fleetman-api-gateway.default.svc.cluster.local
+  location: MESH_INTERNAL
+  ports:
+  - number: 80
+    name: http
+    protocol: HTTP
+  resolution: DNS
+  endpoints:
+  - address: <APP_EASTWESTGATEWAY_FQDN> # Update the EASTWESTGATEWAY_FQDN with the actual FQDN of the east-west gateway in the remote cluster
+    ports:
+      http: 15443
+    labels:
+      topology.istio.io/network: app-vpc
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: cross-cluster-mtls
+  namespace: default
+spec:
+  host: "*.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  exportTo:
+  - "."

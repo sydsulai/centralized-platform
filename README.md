@@ -10,7 +10,7 @@ This app includes multi-cluster multi-network service mesh deployed in AWS EKS a
 
 ## References
 
-- [Istio Multi Cluster Documentation](https://istio.io/latest/docs/setup/install/multicluster/multi-primary/)
+- [Istio Multi Cluster Documentation](https://istio.io/latest/docs/setup/install/multicluster/multi-primary_multi-network/)
 - [Istio Certificae Trust Identity](https://istio.io/latest/docs/tasks/security/cert-management/plugin-ca-cert/)
 - [Istio Deployment Models](https://istio.io/latest/docs/ops/deployment/deployment-models/)
 - [AWS EKS Documentation](https://docs.aws.amazon.com/eks/)
@@ -18,6 +18,8 @@ This app includes multi-cluster multi-network service mesh deployed in AWS EKS a
 - [ArgoCD Documentation](https://argo-cd.readthedocs.io/)
 - [Monitoring MultiCluster Istio with Prometheus Federation](https://istio.io/latest/docs/ops/configuration/telemetry/monitoring-multicluster-prometheus/)
 - [Hierarchial Federation](https://prometheus.io/docs/prometheus/latest/federation/#hierarchical-federation)
+- [Prometheus Yaml](https://raw.githubusercontent.com/istio/istio/release-1.29/samples/addons/prometheus.yaml)
+- [Kiali Yaml]()
 
 ## Issues Found
 

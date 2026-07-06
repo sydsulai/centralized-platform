@@ -40,3 +40,5 @@ terraform.rc
 # Ignore certs directory and yaml files which may contain sensitive data
 certs/
 *cert*
+
+medium*

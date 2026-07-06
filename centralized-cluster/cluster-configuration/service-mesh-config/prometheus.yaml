@@ -14,7 +14,7 @@ metadata:
     {}
 ---
 # Source: prometheus/templates/cm.yaml
-apiVersion: v1
+apiVersion: v1x
 kind: ConfigMap
 metadata:
   labels:
