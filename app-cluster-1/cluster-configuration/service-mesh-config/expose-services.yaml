@@ -25,9 +25,8 @@ metadata:
   namespace: default
 spec:
   hosts:
-  - fleetman-vehicle-telemetry.default.svc.cluster.local
-  - fleetman-staff-service.default.svc.cluster.local
-  - fleetman-webapp.default.svc.cluster.local
+  - fleetman-position-tracker.default.svc.cluster.local
+  - fleetman-api-gateway.default.svc.cluster.local
   location: MESH_INTERNAL
   ports:
   - number: 80
@@ -35,11 +34,11 @@ spec:
     protocol: HTTP
   resolution: DNS
   endpoints:
-  - address: <PLATFORM_EASTWESTGATEWAY_FQDN> # Update the EASTWESTGATEWAY_FQDN with the actual FQDN of the east-west gateway in the remote cluster
+  - address: <APP_EASTWESTGATEWAY_FQDN> # Update the EASTWESTGATEWAY_FQDN with the actual FQDN of the east-west gateway in the remote cluster
     ports:
       http: 15443
     labels:
-      topology.istio.io/network: platform-vpc
+      topology.istio.io/network: app-vpc
 
 ---
 

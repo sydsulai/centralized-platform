@@ -75,3 +75,17 @@ resource "kubernetes_service_account_v1" "xray_daemon" {
         aws_iam_role_policy_attachment.xray_daemon_app_irsa_policy_attachment
     ]
 }
+
+resource "kubernetes_namespace_v1" "istio_system_ns" {
+  metadata {
+    name = "istio-system"
+    labels = {
+      "topology.istio.io/network" = "app-vpc"
+      "topology.istio.io/cluster" = "app-cluster"
+    }
+  }
+
+  depends_on = [
+    aws_eks_cluster.app_cluster_01
+  ]
+}

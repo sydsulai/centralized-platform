@@ -10,7 +10,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=ap-south-1 \
-  --set vpcId=vpc-0d452ed72bd2e668c \
+  --set vpcId=vpc-04c528469206450a8 \
   --set image.repository=public.ecr.aws/eks/aws-load-balancer-controller
 
 # Istio
@@ -35,7 +35,36 @@ kubectl apply -f service-mesh-config/istio-installation-manifests.yaml
 kubectl apply -f common-manifests/ingress-class.yaml
 kubectl apply -f service-mesh-config/kiali.yaml
 kubectl apply -f service-mesh-config/prometheus.yaml
+istioctl create-remote-secret \
+    --context="${APP_CLUSTER}" \
+    --name=app-cluster-01 | \
+    kubectl apply -f - --context="${PLATFORM_CLUSTER}"
+kubectl label secret istio-remote-secret-app-cluster-01 kiali.io/multiCluster=true \
+  -n istio-system \
+  --context="${PLATFORM_CLUSTER}"
+kubectl get secrets istio-remote-secret-app-cluster-01  -o yaml -n istio-system --context=${PLATFORM_CLUSTER}
+
+istioctl create-remote-secret \
+  --context="${APP_CLUSTER}" \
+  --name=app-cluster-01 \
+  --service-account=kiali-remote \
+  --secret-name=kiali-remote-token | \
+  kubectl apply -f - --context="${PLATFORM_CLUSTER}"
+
+# istioctl names the output secret as istio-remote-secret-<name>
+kubectl label secret istio-remote-secret-app-cluster-01 \
+  kiali.io/multiCluster=true \
+  -n istio-system --context="${PLATFORM_CLUSTER}" --overwrite
+
+kubectl rollout restart deployment/kiali -n istio-system --context="${PLATFORM_CLUSTER}"
 
 # Delete all resources in a namespace
 kubectl delete $(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed 's/,$//') --all -n istio-system
 helm uninstall aws-load-balancer-controller -n kube-system
+
+export PLATFORM_GATEWAY=$(kubectl get svc istio-eastwestgateway -n istio-system \
+  --context=${PLATFORM_CLUSTER} \
+  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "Platform Gateway: $PLATFORM_GATEWAY"
+
+kubectl apply -f service-mesh-config/expose-services.yaml --context="${PLATFORM_CLUSTER}"

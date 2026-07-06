@@ -17881,7 +17881,7 @@ metadata:
     istio.io/rev: default
     operator.istio.io/component: IngressGateways
     release: istio
-    topology.istio.io/network: platform-vpc
+    topology.istio.io/network: app-vpc
   name: istio-eastwestgateway-service-account
   namespace: istio-system
 
@@ -18483,7 +18483,6 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
-    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
       name: istiod
       namespace: istio-system
@@ -20952,10 +20951,10 @@ data:
         "meshNetworks": {},
         "mountMtlsCerts": false,
         "multiCluster": {
-          "clusterName": "platform-cluster"
+          "clusterName": "app-cluster-01"
         },
         "nativeNftables": false,
-        "network": "platform-vpc",
+        "network": "app-vpc",
         "networkPolicy": {
           "enabled": false
         },
@@ -21190,10 +21189,10 @@ data:
         "meshNetworks": {},
         "mountMtlsCerts": false,
         "multiCluster": {
-          "clusterName": "platform-cluster"
+          "clusterName": "app-cluster-01"
         },
         "nativeNftables": false,
-        "network": "platform-vpc",
+        "network": "app-vpc",
         "networkPolicy": {
           "enabled": false
         },
@@ -21428,9 +21427,9 @@ data:
         "istioNamespace": "istio-system",
         "meshID": "mesh1",
         "multiCluster": {
-          "clusterName": "platform-cluster"
+          "clusterName": "app-cluster-01"
         },
-        "network": "platform-vpc",
+        "network": "app-vpc",
         "tag": "1.29.1"
       },
       "meshConfig": {
@@ -21500,7 +21499,6 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
-    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
       name: istiod
       namespace: istio-system
@@ -21536,7 +21534,6 @@ webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
-    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRY1psYm43dE1hZjZNRmZWMXJwU25vVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJMk1EWXlPREV6TURNeU5Wb1hEVE0yTURZeQpOVEV6TURNeU5Wb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFPU2FaTFNiYVZla2c5WXAzdHZVTXpkL3FWQ3pTNG8rZkxSeHJqWTQKNzVvNW1WVFpmc0oyOGlHM1BTdTJ4c1pjRXZ2T0J3WHF3WlplZ2gvL2tlY2R3YnRQUTM4ZS9SYjM2ZDBLdlBRbQpQK3BxM1NTVW9pd2h2c0Q4MGNBeXpvSGViWEVUTVNEUUw5Rmh6Z25Ja0lLRGlTRlY3VTRVM0NFbVpHVHJrdHR0Ck5XT1dOVEZyMWZQeVlPd2FhTCtiaHhMdldidkFaOVlXLzhwYTlSMlZrWWVnT0hKTWFhM3g3U252WklRVUlGV1AKejliSDd5ZjFzSitLNFp2VDAxS0RzeFRsalpHY0lNRjBRbFAwNGVhMWNPN0JGa1ZJUGEwYzZXUUdzODlXUlpKeQpwMWZjQVA0Tm9CNUJtSzkxd2hiWEw3eXI2akRKTnA1d3lFODluVFdYeHVHb1grVUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSVdxYWpaRnNKdEoKVWlRZnpTTWN3NExicUVidU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRRFBwb3U3MmFyVzMzUUsySmF0dEVqTQpxQVVMRUJ1L1BQQWZkN0V2dGhWb0hZaE52S3NvUWJvcGpvNksxai9aRlV1NFV6MXF6ME9Qa1VyUTRFdkpSNE5wCjk1NEN4RTBDb1k2L1h3R09VdCtiQU9VaWVYVHZrN0F0VDVoSkpkODZWaWZ3OEtOazcyZUg0SnlWS2NhSEREK3kKemVXT1Q1REdkejVSaGZEUHhqRXlNbmZiS21hY2dqSDI3U3JONXRoeG1oanhiZ1ZwQ1BUa2FWK0htSmV1WmZ2dgpqZERNc1REQlY2emxJVDlNOEdWeGFnTzkxTC92OVpuRGhyZk96eU5Zd0dIbUdjTTMzSlYzZHRlckFCSXNsTlV0Ck9DSlNQekcyb3NJdGhxQzNjMUh0dFRyNWNTZFJjNmhBSVQ0aElENmVSdnNNVitRTXp3WnVadHYwWDNtcHVvVlcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
     service:
       name: istiod
       namespace: istio-system
@@ -21589,7 +21586,7 @@ metadata:
     istio.io/rev: default
     operator.istio.io/component: IngressGateways
     release: istio
-    topology.istio.io/network: platform-vpc
+    topology.istio.io/network: app-vpc
   name: istio-eastwestgateway
   namespace: istio-system
 spec:
@@ -21597,7 +21594,7 @@ spec:
     matchLabels:
       app: istio-eastwestgateway
       istio: eastwestgateway
-      topology.istio.io/network: platform-vpc
+      topology.istio.io/network: app-vpc
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -21628,7 +21625,7 @@ spec:
         service.istio.io/canonical-name: istio-eastwestgateway
         service.istio.io/canonical-revision: default
         sidecar.istio.io/inject: "true"
-        topology.istio.io/network: platform-vpc
+        topology.istio.io/network: app-vpc
     spec:
       affinity:
         nodeAffinity:
@@ -21637,7 +21634,7 @@ spec:
       containers:
       - env:
         - name: ISTIO_META_REQUESTED_NETWORK_VIEW
-          value: platform-vpc
+          value: app-vpc
         - name: ISTIO_META_UNPRIVILEGED_POD
           value: "true"
         image: auto
@@ -21810,9 +21807,9 @@ spec:
         - name: ISTIO_META_UNPRIVILEGED_POD
           value: "true"
         - name: ISTIO_META_NETWORK
-          value: platform-vpc
+          value: app-vpc
         - name: ISTIO_META_CLUSTER_ID
-          value: platform-cluster
+          value: app-cluster-01
         - name: ISTIO_META_NODE_NAME
           valueFrom:
             fieldRef:
@@ -22128,7 +22125,7 @@ spec:
         - name: PILOT_ENABLE_ANALYSIS
           value: "false"
         - name: CLUSTER_ID
-          value: platform-cluster
+          value: app-cluster-01
         - name: GOMAXPROCS
           valueFrom:
             resourceFieldRef:
@@ -22477,7 +22474,7 @@ metadata:
     istio.io/rev: default
     operator.istio.io/component: IngressGateways
     release: istio
-    topology.istio.io/network: platform-vpc
+    topology.istio.io/network: app-vpc
   name: istio-eastwestgateway
   namespace: istio-system
 spec:
@@ -22497,7 +22494,7 @@ spec:
   selector:
     app: istio-eastwestgateway
     istio: eastwestgateway
-    topology.istio.io/network: platform-vpc
+    topology.istio.io/network: app-vpc
   type: LoadBalancer
 
 ---
